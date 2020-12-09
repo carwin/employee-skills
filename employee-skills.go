@@ -49,14 +49,14 @@ func main() {
 		command := os.Args[1]
 		switch command {
 		case "distribution":
-			skill_distribution.GetSkillDistribution()
+			skilldistribution.GetSkillDistribution()
 		case "employee":
 			var employee = os.Args[2]
-			employee_skillset.GetEmployeeSkillset(employee)
+			employeeskillset.GetEmployeeSkillset(employee)
 			break
 		case "skill":
 			var skillName = os.Args[2]
-			skill_practitioners.GetSkillPractitioners(skillName)
+			skillpractitioners.GetSkillPractitioners(skillName)
 			break
 		case "help":
 			printHelp()

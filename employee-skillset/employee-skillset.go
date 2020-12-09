@@ -8,7 +8,8 @@ import (
 	"strconv"
 	"strings"
 	"text/tabwriter"
-	"github.com/carwin/employee-skills/bambooapi"
+
+	bambooapi "github.com/carwin/employee-skills/bambooAPI"
 )
 
 // Directory - struct for json employee data.
@@ -85,7 +86,7 @@ func GetEmployeeSkillset(employee string) {
 		os.Exit(1)
 	}
 
-	var employeeID = getIdFromDirectory(data, employee)
+	var employeeID = getIDFromDirectory(data, employee)
 
 	// Replace {org} with your organization name.
 	path2 := "api/gateway.php/{org}/v1/employees/" + strconv.Itoa(employeeID) + "/tables/customSkills"

@@ -6,7 +6,8 @@ import (
 	"fmt"
 	"os"
 	"strconv"
-	"github.com/carwin/employee-skills/bambooapi"
+
+	bambooapi "github.com/carwin/employee-skills/bambooAPI"
 	employeeskillset "github.com/carwin/employee-skills/employee-skillset"
 	skilldistribution "github.com/carwin/employee-skills/skill-distribution"
 )
@@ -19,7 +20,7 @@ type employeeList struct {
 	names []employee
 }
 
-func createEmployeeList(t skill_distribution.SkillCountTable, s string) employeeList {
+func createEmployeeList(t skilldistribution.SkillCountTable, s string) employeeList {
 	var employeeList employeeList
 
 	for _, v := range t.Row {
@@ -66,7 +67,7 @@ func GetSkillPractitioners(skillName string) {
 	path := "api/gateway.php/{org}/v1/employees/all/tables/customSkills"
 	url := bambooapi.GetBambooAPIURL() + path
 	var data skilldistribution.SkillCountTable
-	err := xml.Unmarshal([]byte(bamboopi.GetAPIData(url, "application/xml")), &data)
+	err := xml.Unmarshal([]byte(bambooapi.GetAPIData(url, "application/xml")), &data)
 	if err != nil {
 		fmt.Print("Errored unmarshaling skill %s\n", err)
 		os.Exit(1)

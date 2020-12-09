@@ -6,7 +6,7 @@ import (
 	"os"
 	"text/tabwriter"
 
-	bambooapi "github.com/carwin/employee-skills/bambooapi"
+	bambooapi "github.com/carwin/employee-skills/bambooAPI"
 )
 
 // SkillCountTable - An xml table for the count of skills.
