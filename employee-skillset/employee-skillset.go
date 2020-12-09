@@ -1,4 +1,4 @@
-package employee_skillset
+package employeeskillset
 
 import (
 	"encoding/json"
@@ -8,28 +8,33 @@ import (
 	"strconv"
 	"strings"
 	"text/tabwriter"
-
-	"github.com/carwin/employee-skills/bambooAPI"
+	"github.com/carwin/employee-skills/bambooapi"
 )
 
+// Directory - struct for json employee data.
 type Directory struct {
 	Employees []DirectoryEmployee `json:"employees"`
 }
 
+// DirectoryEmployee - struct for an individual employee.
 type DirectoryEmployee struct {
 	ID          string
 	FirstName   string
 	DisplayName string
 	LastName    string
 }
+
+// EmployeeSkillsTable - An xml table describing skills.
 type EmployeeSkillsTable struct {
 	Rows []EmployeeSkillsRow `xml:"row"`
 }
 
+// EmployeeSkillsRow - A struct defining table rows from the Skills table.
 type EmployeeSkillsRow struct {
 	EmployeeId int      `xml:"employeeId,attr"`
 	Field      []string `xml:"field"`
 }
+
 type employeeSkillList struct {
 	skills []employeeSkill
 }
@@ -41,7 +46,7 @@ type employeeSkill struct {
 	Certification string
 }
 
-func getIdFromDirectory(d Directory, e string) int {
+func getIDFromDirectory(d Directory, e string) int {
 	var i int
 	for _, v := range d.Employees {
 		if v.FirstName+" "+v.LastName == e {
@@ -64,15 +69,16 @@ func createEmployeeSkillsList(t EmployeeSkillsTable) employeeSkillList {
 	}
 
 	return employeeSkillList
-
 }
 
+// GetEmployeeSkillset - get the given employee's skillset.
 func GetEmployeeSkillset(employee string) {
-	//var employee string = os.Args[2]
-	path := "api/gateway.php/mobomo/v1/employees/directory"
-	url := bambooAPI.GetBambooAPIURL() + path
+
+	// Replace {org} with your organization.
+	path := "api/gateway.php/{org}/v1/employees/directory"
+	url := bambooapi.GetBambooAPIURL() + path
 	var data Directory
-	err := json.Unmarshal([]byte(bambooAPI.GetAPIData(url, "application/json")), &data)
+	err := json.Unmarshal([]byte(bambooapi.GetAPIData(url, "application/json")), &data)
 
 	if err != nil {
 		fmt.Print("Errored unmarshalling data from directory \n", err)
@@ -81,10 +87,11 @@ func GetEmployeeSkillset(employee string) {
 
 	var employeeID = getIdFromDirectory(data, employee)
 
-	path2 := "api/gateway.php/mobomo/v1/employees/" + strconv.Itoa(employeeID) + "/tables/customSkills"
-	url2 := bambooAPI.GetBambooAPIURL() + path2
+	// Replace {org} with your organization name.
+	path2 := "api/gateway.php/{org}/v1/employees/" + strconv.Itoa(employeeID) + "/tables/customSkills"
+	url2 := bambooapi.GetBambooAPIURL() + path2
 	var data2 EmployeeSkillsTable
-	err2 := xml.Unmarshal([]byte(bambooAPI.GetAPIData(url2, "application/xml")), &data2)
+	err2 := xml.Unmarshal([]byte(bambooapi.GetAPIData(url2, "application/xml")), &data2)
 
 	if err2 != nil {
 		fmt.Print("Errored unmarshalling data getting an Employee \n", err2)

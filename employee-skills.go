@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"os"
 
-	employee_skillset "github.com/carwin/employee-skills/employee-skillset"
-	skill_distribution "github.com/carwin/employee-skills/skill-distribution"
-	skill_practitioners "github.com/carwin/employee-skills/skill-practitioners"
+	employeeskillset "github.com/carwin/employee-skills/employee-skillset"
+	skilldistribution "github.com/carwin/employee-skills/skill-distribution"
+	skillpractitioners "github.com/carwin/employee-skills/skill-practitioners"
 )
 
 func printHelp() {

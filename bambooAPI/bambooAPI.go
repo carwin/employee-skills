@@ -1,4 +1,4 @@
-package bambooAPI
+package bambooapi
 
 import (
 	"fmt"
@@ -7,6 +7,7 @@ import (
 	"os"
 )
 
+// GetBambooAPIURL - Get the API URL.
 func GetBambooAPIURL() string {
 	const bambooAPIKey string = ""
 	const bambooAPIURL = "https://" + bambooAPIKey + ":x@api.bamboohr.com/"
@@ -14,7 +15,7 @@ func GetBambooAPIURL() string {
 	return bambooAPIURL
 }
 
-// Make a GET request to a URL.
+// GetAPIData - Make a GET request to a URL.
 func GetAPIData(url string, acceptHeader string) []byte {
 	client := &http.Client{}
 	request, _ := http.NewRequest("GET", url, nil)

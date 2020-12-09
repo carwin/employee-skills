@@ -1,4 +1,4 @@
-package skill_distribution
+package skilldistribution
 
 import (
 	"encoding/xml"
@@ -6,14 +6,15 @@ import (
 	"os"
 	"text/tabwriter"
 
-	bambooAPI "github.com/carwin/employee-skills/bambooAPI"
+	bambooapi "github.com/carwin/employee-skills/bambooapi"
 )
 
-// Structs
-// ----------------------------------------------------------------------------
+// SkillCountTable - An xml table for the count of skills.
 type SkillCountTable struct {
 	Row []SkillCountRow `xml:"row"`
 }
+
+// SkillCountRow - Describes a row for SkillCountTable.
 type SkillCountRow struct {
 	Id    int      `xml:"employeeId,attr"`
 	Field []string `xml:"field"`
@@ -66,11 +67,13 @@ func createSkillList(t SkillCountTable) skillList {
 	return skillList
 }
 
+// GetSkillDistribution - Get all the skills from the table.
 func GetSkillDistribution() {
-	path := "api/gateway.php/mobomo/v1/employees/all/tables/customSkills"
-	url := bambooAPI.GetBambooAPIURL() + path
+	// Replace {org} with your organization name.
+	path := "api/gateway.php/{org}/v1/employees/all/tables/customSkills"
+	url := bambooapi.GetBambooAPIURL() + path
 	var data SkillCountTable
-	err := xml.Unmarshal([]byte(bambooAPI.GetAPIData(url, "application/xml")), &data)
+	err := xml.Unmarshal([]byte(bambooapi.GetAPIData(url, "application/xml")), &data)
 	if err != nil {
 		fmt.Print("Errored unmarshaling skill %s\n", err)
 		os.Exit(1)

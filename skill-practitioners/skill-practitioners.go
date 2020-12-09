@@ -1,4 +1,4 @@
-package skill_practitioners
+package skillpractitioners
 
 import (
 	"encoding/json"
@@ -6,10 +6,9 @@ import (
 	"fmt"
 	"os"
 	"strconv"
-
-	"github.com/carwin/employee-skills/bambooAPI"
-	employee_skillset "github.com/carwin/employee-skills/employee-skillset"
-	skill_distribution "github.com/carwin/employee-skills/skill-distribution"
+	"github.com/carwin/employee-skills/bambooapi"
+	employeeskillset "github.com/carwin/employee-skills/employee-skillset"
+	skilldistribution "github.com/carwin/employee-skills/skill-distribution"
 )
 
 type employee struct {
@@ -38,10 +37,11 @@ func createEmployeeList(t skill_distribution.SkillCountTable, s string) employee
 
 func getEmployeeName(i int) string {
 
-	url := bambooAPI.GetBambooAPIURL() + "api/gateway.php/mobomo/v1/employees/" + strconv.Itoa(i) + "/?fields=firstName,lastName"
+	// Replace {org} with your organization name.
+	url := bambooapi.GetBambooAPIURL() + "api/gateway.php/{org}/v1/employees/" + strconv.Itoa(i) + "/?fields=firstName,lastName"
 	//var data = getAPIData(url, "application/json")
-	var data employee_skillset.DirectoryEmployee
-	err := json.Unmarshal([]byte(bambooAPI.GetAPIData(url, "application/json")), &data)
+	var data employeeskillset.DirectoryEmployee
+	err := json.Unmarshal([]byte(bambooapi.GetAPIData(url, "application/json")), &data)
 
 	if err != nil {
 		fmt.Print("Errored unmarshalling data from directory \n", err)
@@ -50,7 +50,7 @@ func getEmployeeName(i int) string {
 	return data.FirstName + " " + data.LastName
 }
 
-func employeeHasSkill(r skill_distribution.SkillCountRow, i int, s string) bool {
+func employeeHasSkill(r skilldistribution.SkillCountRow, i int, s string) bool {
 	if i == r.Id {
 		if r.Field[0] == s {
 			return true
@@ -60,11 +60,13 @@ func employeeHasSkill(r skill_distribution.SkillCountRow, i int, s string) bool 
 	return false
 }
 
+// GetSkillPractitioners - Find which employees have the given skill.
 func GetSkillPractitioners(skillName string) {
-	path := "api/gateway.php/mobomo/v1/employees/all/tables/customSkills"
-	url := bambooAPI.GetBambooAPIURL() + path
-	var data skill_distribution.SkillCountTable
-	err := xml.Unmarshal([]byte(bambooAPI.GetAPIData(url, "application/xml")), &data)
+	// Replace {org} with your organization name.
+	path := "api/gateway.php/{org}/v1/employees/all/tables/customSkills"
+	url := bambooapi.GetBambooAPIURL() + path
+	var data skilldistribution.SkillCountTable
+	err := xml.Unmarshal([]byte(bamboopi.GetAPIData(url, "application/xml")), &data)
 	if err != nil {
 		fmt.Print("Errored unmarshaling skill %s\n", err)
 		os.Exit(1)
